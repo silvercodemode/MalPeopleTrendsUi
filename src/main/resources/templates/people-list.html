@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MAL People Trends</title>
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            font-family: Verdana, Arial;
+          }
+          body {
+            position: relative;
+          }
+          header {
+            color: white;
+            background-color: #2e51a2;
+            margin: 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            width: 100%;
+          }
+          main {
+            margin: 0 auto;
+          }
+          table {
+            margin: 0 auto;
+            border-spacing: 1rem;
+            min-width: 80%;
+          }
+          caption {
+            margin-top: 10px;
+          }
+          img {
+            border: 4px solid #2e51a2;
+            border-radius: 5px;
+          }
+          th {
+            text-align: left;
+            max-width: 100px;
+            padding: 10px;
+          }
+          tr {
+            box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+            border-radius: 2.5px;
+          }
+          td {
+            padding: 10px;
+          }
+          a {
+            color: inherit;
+            text-decoration: inherit;
+          }
+          a:hover {
+            color: #2e51a2;
+          }
+          footer {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+          }
+          .button {
+            margin: 2px;
+            border: none;
+            background-color: #2e51a2;
+            padding: 2px;
+            color: white;
+            border-radius: 2.5px;
+            display: block;
+          }
+          .button:hover {
+            cursor: pointer;
+            color: rgb(225, 225, 225);
+          }
+          .top-links-container {
+            margin: 10px auto;
+            display: flex;
+            justify-content: center;
+          }
+          .top-links-container a {
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+          .top-links-container a:hover {
+            color: rgb(225, 225, 225);
+          }
+          .person-container {
+            display: flex;
+          }
+          .image-name-container {
+            align-content: space-between;
+          }
+          .bold {
+            font-weight: 800;
+          }
+          .favorites-container {
+            margin-left: 20px;
+          }
+          .green {
+            color: rgb(20, 180, 20);
+            font-weight: 800;
+          }
+          .red {
+            color: red;
+            font-weight: 800;
+          }
+          .page-link-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 70%;
+            justify-content: space-between;
+          }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>MAL People Trends</h1>
+            <p>Who is trending recently on MyAnimeList?</p>
+            <div class="top-links-container">
+                <a th:href="@{/one_day_trend}">1 Day Trend</a>
+                <a th:href="@{/seven_day_trend}">7 Day Trend</a>
+                <a th:href="@{/thirty_day_trend}">30 Day Trend</a>
+            </div>
+        </header>
+        <main>
+            <table>
+                <caption>
+                    7 Day Trend
+                </caption>
+                <thead>
+                <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Person</th>
+                    <th scope="col">Previous Favorites</th>
+                    <th scope="col">Current Favorites</th>
+                    <th scope="col">Change</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="person : ${people}">
+                        <td th:text="${person.rank}"></td>
+                        <td class="image-name-container">
+                            <img
+                                    th:src="${person.imageLink}"
+                            />
+                            <div>
+                                <a
+                                        class="bold"
+                                        href="https://myanimelist.net/people/118/Hiroshi_Kamiya"
+                                        th:text="${person.englishName}"
+                                ></a
+                                >
+                                <p th:text="${person.japaneseName}"></p>
+                            </div>
+                        </td>
+                        <td th:text="${person.oldFavoriteCount}"></td>
+                        <td th:text="${person.newFavoriteCount}"></td>
+                        <td th:class="${person.greenOrRed}"
+                            th:text="${person.favoritesChange}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer>
+                <div class="page-link-container">
+                    <a class="button"
+                            th:each="link : ${links}"
+                            th:text="${link.buttonText}"
+                            th:href="@{/__${link.queryDays}___day_trend?(offset=__${link.offset}__)}"></a>
+                </div>
+            </footer>
+        </main>
+    </body>
+</html>
