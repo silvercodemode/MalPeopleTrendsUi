@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class MalPeopleTrendsService {
+
     private final JdbcTemplate jdbcTemplate;
 
     public MalPeopleTrendsService(JdbcTemplate jdbcTemplate) {
@@ -32,19 +33,23 @@ public class MalPeopleTrendsService {
                 )
             ).stream()
             .filter(person -> Integer.parseInt(person.favoritesChange()) != 0)
-                .map(p -> new Person(
-                        Integer.toString(rank.getAndIncrement()),
-                        p.englishName(),
-                        p.japaneseName(),
-                        p.malLink(),
-                        p.imageLink(),
-                        p.oldFavoriteCount(),
-                        p.newFavoriteCount(),
-                        p.favoritesChange()
-                ))
+            .map(p -> new Person(
+                    Integer.toString(rank.getAndIncrement()),
+                    p.englishName(),
+                    p.japaneseName(),
+                    p.malLink(),
+                    p.imageLink(),
+                    p.oldFavoriteCount(),
+                    p.newFavoriteCount(),
+                    p.favoritesChange()
+            ))
             .collect(Collectors.toList());
 
         var totalRecords = filteredList.size();
+
+        if (offset + 50 > totalRecords) {
+            offset = totalRecords - 50;
+        }
         return new PeoplePage(filteredList.subList(offset, offset + 50), totalRecords);
     }
 }

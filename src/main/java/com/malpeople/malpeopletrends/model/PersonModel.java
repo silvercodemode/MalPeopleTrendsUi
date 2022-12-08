@@ -8,5 +8,4 @@ public record PersonModel(String rank,
                           String oldFavoriteCount,
                           String newFavoriteCount,
                           String favoritesChange,
-                          String greenOrRed) {
-}
+                          String greenOrRed) {}

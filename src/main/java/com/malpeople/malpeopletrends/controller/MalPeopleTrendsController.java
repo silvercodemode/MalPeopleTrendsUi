@@ -38,6 +38,14 @@ public class MalPeopleTrendsController {
         var links = getLinks(peoplePage, queryDays);
         model.addAttribute("links", links);
 
+        int queryDaysNumber = switch (queryDays) {
+            case "one" -> 1;
+            case "seven" -> 7;
+            case "thirty" -> 30;
+            default -> 7;
+        };
+        model.addAttribute("queryDaysNumber", queryDaysNumber);
+
         return "people-list";
     }
     private List<PersonModel> getPeopleModel(PeoplePage peoplePage) {
