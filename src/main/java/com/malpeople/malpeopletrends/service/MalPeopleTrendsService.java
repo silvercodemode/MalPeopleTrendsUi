@@ -47,9 +47,8 @@ public class MalPeopleTrendsService {
 
         var totalRecords = filteredList.size();
 
-        if (offset + 50 > totalRecords) {
-            offset = totalRecords - 50;
-        }
-        return new PeoplePage(filteredList.subList(offset, offset + 50), totalRecords);
+        offset = Math.max(0, Math.min(Math.max(0, offset), totalRecords - 1));
+        var upperBound = Math.min(offset + 50, totalRecords);
+        return new PeoplePage(filteredList.subList(offset, upperBound), totalRecords);
     }
 }

@@ -24,13 +24,19 @@ public class MalPeopleTrendsController {
     @GetMapping({"/", "/seven_day_trend"})
     public String getSevenDayTrend(
             Model model,
-            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset
+            @RequestParam(value = "offset", required = false, defaultValue = "0") String offset
     ) {
         return getPeopleListPage(model, offset, "seven_day_favorite_diff", "seven");
     }
 
-    private String getPeopleListPage(Model model, int offset, String tableName, String queryDays) {
-        var peoplePage = malPeopleTrendsService.getPeopleTrendsOneDay(offset, tableName);
+    private String getPeopleListPage(Model model, String offset, String tableName, String queryDays) {
+        int offsetInt;
+        try {
+            offsetInt = Integer.parseInt(offset);
+        } catch (NumberFormatException e) {
+            offsetInt = 0;
+        }
+        var peoplePage = malPeopleTrendsService.getPeopleTrendsOneDay(offsetInt, tableName);
 
         var people = getPeopleModel(peoplePage);
         model.addAttribute("people", people);
@@ -48,6 +54,7 @@ public class MalPeopleTrendsController {
 
         return "people-list";
     }
+
     private List<PersonModel> getPeopleModel(PeoplePage peoplePage) {
         return peoplePage.people().stream().map(p -> new PersonModel(
                 p.rank(),
@@ -75,7 +82,7 @@ public class MalPeopleTrendsController {
     @GetMapping("/one_day_trend")
     public String getOneDayTrend(
             Model model,
-            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset
+            @RequestParam(value = "offset", required = false, defaultValue = "0") String offset
     ) {
         return getPeopleListPage(model, offset, "one_day_favorite_diff", "one");
     }
@@ -83,7 +90,7 @@ public class MalPeopleTrendsController {
     @GetMapping("/thirty_day_trend")
     public String getThirtyDayTrend(
             Model model,
-            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset
+            @RequestParam(value = "offset", required = false, defaultValue = "0") String offset
     ) {
         return getPeopleListPage(model, offset, "thirty_day_favorite_diff", "thirty");
     }
