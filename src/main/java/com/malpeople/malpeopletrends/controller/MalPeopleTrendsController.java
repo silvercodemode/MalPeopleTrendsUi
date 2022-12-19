@@ -36,7 +36,7 @@ public class MalPeopleTrendsController {
         } catch (NumberFormatException e) {
             offsetInt = 0;
         }
-        var peoplePage = malPeopleTrendsService.getPeopleTrendsOneDay(offsetInt, tableName);
+        var peoplePage = malPeopleTrendsService.getPeopleTrends(offsetInt, tableName);
 
         var people = getPeopleModel(peoplePage);
         model.addAttribute("people", people);

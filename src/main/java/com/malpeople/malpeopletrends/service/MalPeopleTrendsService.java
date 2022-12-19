@@ -17,7 +17,7 @@ public class MalPeopleTrendsService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public PeoplePage getPeopleTrendsOneDay(int offset, String tableName) {
+    public PeoplePage getPeopleTrends(int offset, String tableName) {
         var rank = new AtomicInteger(1);
         var filteredList = jdbcTemplate.query(
                 "select * from " + tableName,
